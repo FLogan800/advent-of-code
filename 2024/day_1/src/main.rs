@@ -1,4 +1,5 @@
 use std::fs;
+use std::time::Instant;
 
 fn main() {
     let file = fs::read_to_string("input.txt").expect("Failed to read file");
@@ -8,14 +9,33 @@ fn main() {
     arr1.sort();
     arr2.sort();
 
+    let start = Instant::now();
     // Part 1
     let mut total_distance = 0;
 
     for i in 0..arr1.len() {
         total_distance += (arr1[i] - arr2[i]).abs();
     }
-
-    println!("{total_distance}");
+    
+    // Part 2
+    let mut similarity_score = 0;
+    
+    for i in 0..arr1.len() {
+        let mut appearances = 0;
+        
+        for j in 0..arr2.len() {
+            if arr1[i] == arr2[j] {
+                appearances += 1;
+            }
+        }
+        
+        similarity_score += arr1[i] * appearances;
+    }
+    let end = start.elapsed();
+    
+    println!("Total Distance: {total_distance}");
+    println!("Similarity Score: {similarity_score}");
+    println!("Time Elapsed: {:?}", end);
 }
 
 fn read_file(file: String) -> (Vec<i32>, Vec<i32>) {
