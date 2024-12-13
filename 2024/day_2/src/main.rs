@@ -17,12 +17,22 @@ fn main() {
         i += 1;
     }
 
-    //Part 1
     let now = Instant::now();
     let mut num_safe_reports = 0;
 
     for report in reports {
-        num_safe_reports += if is_valid_report(report) { 1 } else { 0 };
+        let mut is_safe = is_valid_report(report.clone(), 99);
+        
+        if !is_safe {
+            for i in 0..report.len() {
+                if is_valid_report(report.clone(), i) {
+                    is_safe = true;
+                    break;
+                }
+            }
+        }
+
+        num_safe_reports += if is_safe { 1 } else { 0 };
     }
 
     let time_elapsed = now.elapsed();
@@ -31,7 +41,11 @@ fn main() {
     println!("Time elapsed: {:?}", time_elapsed);
 }
 
-fn is_valid_report(report: Vec<i32>) -> bool {
+fn is_valid_report(mut report: Vec<i32>, remove: usize) -> bool {
+    if remove <= report.len() {
+        report.remove(remove as usize);
+    }
+
     let mut total_change: i32 = 0;
 
     for i in 1..report.len() {
