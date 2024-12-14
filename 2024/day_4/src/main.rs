@@ -18,7 +18,7 @@ fn main() {
     }
 
     // Part 1
-    
+
     let offsets = [
         (-1, -1),
         (-1, 0),
@@ -30,7 +30,6 @@ fn main() {
         (1, 0),
         (1, 1),
     ];
-
 
     let mut xmas_count = 0;
 
@@ -44,12 +43,6 @@ fn main() {
                 let i = i as i32;
                 let j = j as i32;
 
-                let offset1_y = i - y;
-                let offset1_x = j - x;
-
-                let offset2_y = i - y * 2;
-                let offset2_x = j - x * 2;
-
                 let offset3_y = i - y * 3;
                 let offset3_x = j - x * 3;
 
@@ -60,6 +53,12 @@ fn main() {
                 {
                     continue;
                 }
+
+                let offset1_y = i - y;
+                let offset1_x = j - x;
+
+                let offset2_y = i - y * 2;
+                let offset2_x = j - x * 2;
 
                 if matrix[offset1_y as usize][offset1_x as usize] != 'M' {
                     continue;
@@ -74,5 +73,35 @@ fn main() {
         }
     }
 
-    println!("{xmas_count}");
+    // Part 2
+
+    let mut x_mas_count = 0;
+
+    for i in 1..(matrix.len() - 1) {
+        for j in 1..(matrix[0].len() - 1) {
+            if matrix[i][j] != 'A' {
+                continue;
+            }
+
+            let top_left = matrix[i - 1][j - 1];
+            let bottom_right = matrix[i + 1][j + 1];
+
+            let bottom_left = matrix[i + 1][j - 1];
+            let top_right = matrix[i - 1][j + 1];
+
+            if !((top_left == 'M' && bottom_right == 'S') || (top_left == 'S' && bottom_right == 'M'))
+            {
+                continue;
+            } else if !((bottom_left == 'M' && top_right == 'S')
+                || (bottom_left == 'S' && top_right == 'M'))
+            {
+                continue;
+            } else {
+                x_mas_count += 1;
+            }
+        }
+    }
+
+    println!("Xmas Count: {xmas_count}");
+    println!("X-Mas Count: {x_mas_count}");
 }
