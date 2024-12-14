@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::fs;
+use std::{fs, time::Instant};
 
 fn main() {
     let file = fs::read_to_string("input.txt").unwrap();
@@ -8,6 +8,8 @@ fn main() {
 
     let mut sum = 0;
     let mut skip = false;
+
+    let start = Instant::now();
 
     for mat in re.captures_iter(&file) {
         if &mat[0] == "do()" {
@@ -21,6 +23,8 @@ fn main() {
             sum += num1 * num2;
         }
     }
+    let time_elapsed = start.elapsed();
 
-    println!("{sum}");
+    println!("Sum: {sum}");
+    println!("Time elapsed: {:?}", time_elapsed);
 }
