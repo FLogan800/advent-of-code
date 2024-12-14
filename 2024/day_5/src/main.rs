@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, time::Instant};
 
 fn main() {
     let file = fs::read_to_string("input.txt").unwrap();
@@ -26,6 +26,8 @@ fn main() {
             updates[i].push(page);
         }
     }
+
+    let now = Instant::now();
 
     let mut valid_sum = 0;
     let mut invalid_sum = 0;
@@ -59,9 +61,12 @@ fn main() {
             invalid_sum += update[update.len() / 2];
         }
     }
+    
+    let time_elapsed = now.elapsed();
 
     println!("Valid Sum: {valid_sum}");
     println!("Invalid Sum: {invalid_sum}");
+    println!("Time Elapsed: {:?}", time_elapsed);
 }
 
 fn is_valid(update: &Vec<i32>, rules: &Vec<(i32, i32)>) -> bool {
